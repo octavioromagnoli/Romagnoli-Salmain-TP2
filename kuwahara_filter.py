@@ -36,19 +36,15 @@ for fila_real in range(2, filas_p - 2):
 
         pixel_resultante = promedio_colores(cuadrante_elegido)
 
-        copia_img_padding[fila_real][columna_real] = pixel_resultante
+        copia_img_padding[fila_real, columna_real] = pixel_resultante
 
         #print(cuadrante_elegido.shape)
         #rojos_a, verdes_a, azules_a = separate_colors(cuad_a)
 
 imagen_kuwahara = copia_img_padding[2:-2,2:-2,:]
-Image.fromarray(imagen_kuwahara).save('foto_resultantex.png')
+Image.fromarray(imagen_kuwahara).save('foto_resultante.png')
 imagen_objetivo = numpy_image("baboones_fotos/kuwahara_baboon.png")
 
-print(f'shape kuwa: {imagen_kuwahara.shape}')
-print(f'shape objetivo: {imagen_objetivo.shape}')
-
-son_iguales = True
 son_iguales = np.array_equal(imagen_kuwahara, imagen_objetivo)
 
 if son_iguales:
