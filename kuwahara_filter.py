@@ -4,7 +4,15 @@ from PIL import Image
 from funciones import numpy_image, add_padding, get_shape, var_suma, promedio_colores
 
 def apply_kuwahara(path: str)->list:
-
+    '''
+    Este filtro aplica el filtro Kuwahara a una imagen.
+    Utiliza las funciones: numpy_image, add_padding, get_shape, var_suma, promedio_colores (del archivo funciones.py).
+    Argumentos:
+        path : str
+            path al archivo de tipo Imagen al cual se le quiere aplicar el filtro kuwahara.
+    Devuelve:
+        La Imagen ya con el filtro aplicado como np.array tridimensional.
+    '''
 
     #Uso _p como sufijo para las variables que aplican a la imagen con padding
     imagen = numpy_image(path)
