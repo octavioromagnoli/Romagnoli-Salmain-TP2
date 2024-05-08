@@ -10,6 +10,54 @@ def get_shape(array: list)->tuple[int, int, int]:
     '''
     return array.shape
 
+def prom_menos_infd(array: list)->list:
+    lista = []
+    for i in range(2):
+        for j in range(2):
+                lista.append(array[i, j])
+    lista[3] = 0
+    suma = 0
+    for i in lista:
+        suma += i
+    promedio = suma/3
+    return np.floor(promedio)
+
+def todos_menos_infd(array:list)->list:
+    imagen_sin_pxr = np.ravel(np.array([array[0, 0, :],  # Píxel superior izquierdo
+                           array[0, 1, :],  # Píxel superior derecho
+                           array[1, 0, :]])) # Píxel inferior izquierdo
+    return imagen_sin_pxr
+
+def separate_colors2(array: list)->tuple[list, list, list]:
+    '''
+    
+    '''
+    lista = np.ravel(array)
+    rojos = np.ravel(lista)[::3]
+    verdes = np.ravel(lista)[1::3]
+    azules = np.ravel(lista)[2::3]
+    return rojos, verdes, azules
+
+def lesser_variance(array: list)-> list:
+    red, green, blue = separate_colors2(array)
+
+    vars_r = np.var(red)
+    vars_g = np.var(green)
+    vars_b = np.var(blue)
+
+    varianza_menor = min(vars_r, vars_g, vars_b)
+
+    if vars_r == varianza_menor:
+        cuadrante_elegido = red.copy()
+        indice_color = 0
+    elif vars_g == varianza_menor:
+        cuadrante_elegido = green.copy()
+        indice_color = 1
+    elif vars_b == varianza_menor:
+        cuadrante_elegido = blue.copy()
+        indice_color = 2
+    return indice_color, cuadrante_elegido
+
 def desencriptador_imagen(imagen)->list:
     secuencia = []
     matriz_imagen = np.array(imagen)
@@ -17,13 +65,16 @@ def desencriptador_imagen(imagen)->list:
     for i in range(0, alto_imagen-1, 2):
         for j in range(0, ancho_imagen-1, 2):
             seccion = matriz_imagen[i: i+2, j: j+2, :]
-            varianza = np.var(seccion, axis=(0, 1))
-            var_minima = np.argmin(varianza)
-            promedio = int(np.mean(seccion[:,:,var_minima], axis=(0, 1)))
+            sin_inf_der = todos_menos_infd(seccion)
+
+            var_minima, color_sin_infd = lesser_variance(sin_inf_der)
+
+            promedio = np.floor(np.mean(color_sin_infd))
+
             verdadero_valor = (seccion[1, 1, var_minima] - promedio) 
             if verdadero_valor < 0 and verdadero_valor != -1:
-                verdadero_valor = (verdadero_valor + 256) %256
-            secuencia.append(verdadero_valor)
+                verdadero_valor = (verdadero_valor + 256) 
+            secuencia.append(np.int16(verdadero_valor))
             if verdadero_valor == 0:
                 break
             else:
