@@ -1,62 +1,6 @@
 from PIL import Image
 import numpy as np
-
-def get_shape(array: list)->tuple[int, int, int]:
-    '''
-    Toma un array y devuelve una tupla con los largos de cada dimension
-    Argumentos:
-        array : np.array
-            El array del que se quiere saber la forma
-    '''
-    return array.shape
-
-def prom_menos_infd(array: list)->list:
-    lista = []
-    for i in range(2):
-        for j in range(2):
-                lista.append(array[i, j])
-    lista[3] = 0
-    suma = 0
-    for i in lista:
-        suma += i
-    promedio = suma/3
-    return np.floor(promedio)
-
-def todos_menos_infd(array:list)->list:
-    imagen_sin_pxr = np.ravel(np.array([array[0, 0, :],  # Píxel superior izquierdo
-                           array[0, 1, :],  # Píxel superior derecho
-                           array[1, 0, :]])) # Píxel inferior izquierdo
-    return imagen_sin_pxr
-
-def separate_colors2(array: list)->tuple[list, list, list]:
-    '''
-    
-    '''
-    lista = np.ravel(array)
-    rojos = np.ravel(lista)[::3]
-    verdes = np.ravel(lista)[1::3]
-    azules = np.ravel(lista)[2::3]
-    return rojos, verdes, azules
-
-def lesser_variance(array: list)-> list:
-    red, green, blue = separate_colors2(array)
-
-    vars_r = np.var(red)
-    vars_g = np.var(green)
-    vars_b = np.var(blue)
-
-    varianza_menor = min(vars_r, vars_g, vars_b)
-
-    if vars_r == varianza_menor:
-        cuadrante_elegido = red.copy()
-        indice_color = 0
-    elif vars_g == varianza_menor:
-        cuadrante_elegido = green.copy()
-        indice_color = 1
-    elif vars_b == varianza_menor:
-        cuadrante_elegido = blue.copy()
-        indice_color = 2
-    return indice_color, cuadrante_elegido
+from funciones2 import lesser_variance, todos_menos_infd, get_shape
 
 def desencriptador_imagen(imagen)->list:
     secuencia = []
@@ -121,7 +65,7 @@ def desencrpitar_mensaje(secuencia)->str:
     return mensaje
 
 
-imagen = np.array(Image.open('encrypted_baboon.png'))
+imagen = np.array(Image.open('prueba_baboonx.png'))
 secuencia = desencriptador_imagen(imagen)
 print(secuencia)
 print(desencrpitar_mensaje(secuencia))
