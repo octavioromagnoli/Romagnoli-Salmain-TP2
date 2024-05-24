@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-from funciones import encriptador, mensaje_en_imagen, asegurar_extension
+from funciones import encriptador, mensaje_en_imagen, asegurar_extension, apply_kuwahara
 #importar funciones (encriptador/desencriptador)
 
 #Encriptacion de Imagen
@@ -8,10 +8,10 @@ from funciones import encriptador, mensaje_en_imagen, asegurar_extension
 print('≡≡Encriptador≡≡')
 imagen_base = input('Ingrese nombre de la imagen a utilizar como base: ')
 imagen_base = asegurar_extension(imagen_base)
-imagen_base = np.array(Image.open(imagen_base))
 mensaje = input('Ingrese el mensaje a esconder: ')
 nombre_archivo_salida = input('Ingrese nombre del archivo de salida: ')
 nombre_archivo_salida = asegurar_extension(nombre_archivo_salida)
+imagen_base = apply_kuwahara(imagen_base)
 
 secuencia = encriptador(mensaje)
 imagen_encriptada = mensaje_en_imagen(secuencia, imagen_base)

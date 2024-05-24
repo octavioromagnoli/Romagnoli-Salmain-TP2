@@ -296,7 +296,7 @@ def desencrpitar_mensaje(secuencia: list)->str:
 
 def apply_kuwahara(path: str)->list:
     '''
-    Esta funcion aplica el filtro Kuwahara a una imagen.
+    Esta funcion recibe el path a una imagen y devuelve la matriz numpy de la imagen con el filtro Kuwahara aplicado.
     Utiliza las funciones: numpy_image, add_padding, get_shape, var_suma, promedio_colores (del archivo funciones.py).
     Argumentos:
         path : str
